@@ -16,12 +16,20 @@ namespace H17.Areas.Cards.Controllers
     [ApiController]
     public class PatientDocumentsInfosController : ControllerBase
     {
-        [HttpGet("{id}")]
-        public async Task<PatientDocumentsInfo> Details(Guid patientId)
+        [HttpGet]
+        public async Task<List<PatientDocumentsInfo>> List([FromQuery] Guid patientId)
         {
             using (DB db = new DB())
             {
-                return db.PatientDocumentsInfos.Where(x=>x.PatientId == patientId).FirstOrDefault();
+                return db.PatientDocumentsInfos.Where(x => x.PatientId == patientId).ToList();
+            }
+        }
+        [HttpGet]
+        public async Task<PatientDocumentsInfo> Details(Guid patientId, Guid cardId)
+        {
+            using (DB db = new DB())
+            {
+                return db.PatientDocumentsInfos.Where(x => x.PatientId == patientId && x.Id == cardId).SingleOrDefault();
             }
         }
 
@@ -51,9 +59,8 @@ namespace H17.Areas.Cards.Controllers
                     if (data == null)
                         throw new ArgumentNullException();
 
-                    data.DriversLicense = value.DriversLicense;
-                    data.PassportNumber = value.PassportNumber;
-                    data.SocialSecurityNumber = value.SocialSecurityNumber;
+                    data.Key = value.Key;
+                    data.Value = value.Value;
 
                     await db.SaveChangesAsync();
                     return true;
@@ -66,7 +73,7 @@ namespace H17.Areas.Cards.Controllers
 
         // DELETE api/<ValuesController>/5
         [HttpPost]
-        public async Task<bool> Delete(Guid id)
+        public async Task<bool> Delete([FromBody]Guid id)
         {
             try
             {

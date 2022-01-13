@@ -16,12 +16,20 @@ namespace H17.Areas.Cards.Controllers
     [ApiController]
     public class PatientBirthInfosController : ControllerBase
     {
-        [HttpGet("{id}")]
-        public async Task<PatientBirthInfo> Details(Guid patientId)
+        [HttpGet]
+        public async Task<List<PatientBirthInfo>> List([FromQuery] Guid patientId)
         {
             using (DB db = new DB())
             {
-                return db.PatientBirthInfos.Where(x=>x.PatientId == patientId).FirstOrDefault();
+                return db.PatientBirthInfos.Where(x => x.PatientId == patientId).ToList();
+            }
+        }
+        [HttpGet]
+        public async Task<PatientBirthInfo> Details(Guid patientId, Guid cardId)
+        {
+            using (DB db = new DB())
+            {
+                return db.PatientBirthInfos.Where(x => x.PatientId == patientId && x.Id == cardId).SingleOrDefault();
             }
         }
 
@@ -69,7 +77,7 @@ namespace H17.Areas.Cards.Controllers
 
         // DELETE api/<ValuesController>/5
         [HttpPost]
-        public async Task<bool> Delete(Guid id)
+        public async Task<bool> Delete([FromBody] Guid id)
         {
             try
             {

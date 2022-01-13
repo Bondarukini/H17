@@ -77,7 +77,7 @@ namespace H17.Areas.Cards.Controllers
         }
 
         [HttpPost]
-        public async Task<bool> Delete(Guid id)
+        public async Task<bool> Delete([FromBody]Guid id)
         {
             try
             {

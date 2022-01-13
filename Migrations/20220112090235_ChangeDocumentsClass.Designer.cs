@@ -4,14 +4,16 @@ using H17.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace H17.Migrations
 {
     [DbContext(typeof(DB))]
-    partial class DBModelSnapshot : ModelSnapshot
+    [Migration("20220112090235_ChangeDocumentsClass")]
+    partial class ChangeDocumentsClass
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -141,13 +143,13 @@ namespace H17.Migrations
                     b.Property<Guid>("PatientId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Phone")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("System")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Use")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -161,13 +163,16 @@ namespace H17.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Key")
+                    b.Property<string>("Ethnicity")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Language")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("PatientId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Value")
+                    b.Property<string>("Race")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");

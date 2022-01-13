@@ -16,16 +16,24 @@ namespace H17.Areas.Cards.Controllers
     [ApiController]
     public class PatientTelecomInfosController : ControllerBase
     {
-        [HttpGet("{id}")]
-        public async Task<PatientTelecomInfo> Details(Guid patientId)
+
+        [HttpGet]
+        public async Task<List<PatientTelecomInfo>> List([FromQuery] Guid patientId)
         {
             using (DB db = new DB())
             {
-                return db.PatientTelecomInfos.Where(x=>x.PatientId == patientId).FirstOrDefault();
+                return db.PatientTelecomInfos.Where(x => x.PatientId == patientId).ToList();
+            }
+        }
+        [HttpGet]
+        public async Task<PatientTelecomInfo> Details(Guid patientId, Guid cardId)
+        {
+            using (DB db = new DB())
+            {
+                return db.PatientTelecomInfos.Where(x => x.PatientId == patientId && x.Id == cardId).SingleOrDefault();
             }
         }
 
-        // POST api/<ValuesController>
         [HttpPost]
         public async Task<PatientTelecomInfo> Create(PatientTelecomInfo value)
         {
@@ -52,7 +60,7 @@ namespace H17.Areas.Cards.Controllers
                         throw new ArgumentNullException();
 
                     data.Use = value.Use;
-                    data.Phone = value.Phone;
+                    data.Value = value.Value;
                     data.System = value.System;
 
                     await db.SaveChangesAsync();
@@ -66,7 +74,7 @@ namespace H17.Areas.Cards.Controllers
 
         // DELETE api/<ValuesController>/5
         [HttpPost]
-        public async Task<bool> Delete(Guid id)
+        public async Task<bool> Delete([FromBody]Guid id)
         {
             try
             {
